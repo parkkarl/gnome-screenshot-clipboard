@@ -23,7 +23,7 @@ Requires Wayland session. X11 not tested.
 ## Install
 
 ```bash
-git clone https://github.com/markuspark/gnome-screenshot-clipboard.git
+git clone https://github.com/parkkarl/gnome-screenshot-clipboard.git
 cd gnome-screenshot-clipboard
 make install
 ```
