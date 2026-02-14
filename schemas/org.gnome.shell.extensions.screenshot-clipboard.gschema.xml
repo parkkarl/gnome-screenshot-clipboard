@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.screenshot-clipboard"
+          path="/org/gnome/shell/extensions/screenshot-clipboard/">
+    <key name="area-screenshot" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;s']</default>
+      <summary>Area Screenshot</summary>
+      <description>Keybinding for area selection screenshot copied to clipboard</description>
+    </key>
+    <key name="fullscreen-screenshot" type="as">
+      <default>['Print']</default>
+      <summary>Fullscreen Screenshot</summary>
+      <description>Keybinding for full screen screenshot copied to clipboard</description>
+    </key>
+  </schema>
+</schemalist>
