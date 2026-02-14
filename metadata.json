@@ -1,6 +1,6 @@
 {
     "name": "Screenshot to Clipboard",
-    "description": "Mac-like screenshot shortcuts: Shift+Super+S for area selection, PrintScreen for full screen. Copied directly to clipboard.",
+    "description": "Screenshot shortcuts: Shift+Super+S for area selection, PrintScreen for full screen. Copied directly to clipboard.",
     "uuid": "screenshot-clipboard@local",
     "shell-version": ["47", "48", "49"],
     "version": 1,

@@ -1,6 +1,6 @@
 # Screenshot to Clipboard — GNOME Shell Extension
 
-Mac-like screenshot shortcuts for GNOME desktop:
+Screenshot shortcuts for GNOME desktop:
 
 - **Shift+Super+S** — draw a rectangle, area screenshot goes to clipboard
 - **PrintScreen** — full screen screenshot goes to clipboard
