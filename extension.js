@@ -1,6 +1,9 @@
 import Shell from 'gi://Shell';
+import St from 'gi://St';
+import GdkPixbuf from 'gi://GdkPixbuf';
 import Meta from 'gi://Meta';
 import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -64,15 +67,31 @@ export default class ScreenshotClipboardExtension extends Extension {
             const rect = await selector.selectAsync();
 
             const screenshot = new Shell.Screenshot();
-            const [content, scale = 1] = await screenshot.screenshot_stage_to_content();
-            const texture = content.get_texture();
+            const stream = Gio.MemoryOutputStream.new_resizable();
+            await screenshot.screenshot_area(
+                rect.x, rect.y, rect.width, rect.height, stream);
+            stream.close(null);
 
-            await Screenshot.captureScreenshot(
-                texture,
-                [rect.x, rect.y, rect.width, rect.height],
-                scale,
-                null
-            );
+            const bytes = stream.steal_as_bytes();
+
+            // Downscale from physical to logical resolution so the
+            // pasted image matches the on-screen selection size
+            const loader = GdkPixbuf.PixbufLoader.new();
+            loader.write_bytes(bytes);
+            loader.close();
+            const pixbuf = loader.get_pixbuf();
+
+            let clipboardBytes = bytes;
+            if (pixbuf.get_width() !== rect.width || pixbuf.get_height() !== rect.height) {
+                const scaled = pixbuf.scale_simple(
+                    rect.width, rect.height, GdkPixbuf.InterpType.BILINEAR);
+                const [, buf] = scaled.save_to_bufferv('png', [], []);
+                clipboardBytes = GLib.Bytes.new(buf);
+            }
+
+            const clipboard = St.Clipboard.get_default();
+            clipboard.set_content(
+                St.ClipboardType.CLIPBOARD, 'image/png', clipboardBytes);
         } catch (e) {
             if (!e.message?.includes('cancelled'))
                 logError(e, 'ScreenshotClipboard: area screenshot failed');
